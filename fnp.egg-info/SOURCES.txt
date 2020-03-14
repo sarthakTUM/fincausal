@@ -1,0 +1,6 @@
+README.txt
+setup.py
+fnp.egg-info/PKG-INFO
+fnp.egg-info/SOURCES.txt
+fnp.egg-info/dependency_links.txt
+fnp.egg-info/top_level.txt
