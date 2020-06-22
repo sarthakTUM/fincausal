@@ -17,3 +17,8 @@ def calculate_class_weights_task1(modeling_dataset: FinCausalTask1ModelingDatase
                                                       labels)
     return list(class_weights)
 
+
+def softmax(x: List[float]) -> List[float]:
+    """Compute softmax values for each sets of scores in x."""
+    e_x = np.exp(x - np.max(x))
+    return e_x / e_x.sum()

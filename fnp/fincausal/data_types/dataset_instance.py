@@ -6,7 +6,7 @@ from fnp.fincausal.data_types.core import FinCausalDatasetInstance
 class FinCausalTask1DatasetInstance(FinCausalDatasetInstance):
     def __init__(self,
                  unique_id: str,
-                 index: float,
+                 index: str,
                  text: str,
                  gold: Optional[int] = None):
         super().__init__(unique_id=unique_id, index=index, text=text)
@@ -15,7 +15,7 @@ class FinCausalTask1DatasetInstance(FinCausalDatasetInstance):
 
 class FinCausalTask2DatasetInstance(FinCausalDatasetInstance):
     def __init__(self,
-                 index: float,
+                 index: str,
                  text: str,
                  cause: str,
                  effect: str,

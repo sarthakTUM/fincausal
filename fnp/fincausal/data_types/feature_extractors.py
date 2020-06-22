@@ -1,33 +1,39 @@
 from typing import Optional, List, Tuple
 
 from nltk import sent_tokenize, word_tokenize, pos_tag
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 from fnp.fincausal.data_types.core import FeatureExtractor
 from fnp.fincausal.data_types.dataset_instance import FinCausalDatasetInstance
-from fnp.fincausal.data_types.features import IsCausalConnectivePresentFeature, POSFeature
+from fnp.fincausal.data_types.features import POSFeature, BooleanFeature
+
+import re
 
 
-class IsCausalConnectivePresentFeatureExtractor(FeatureExtractor):
-    def __init__(self):
+class SubstringPresentFeatureExtractor(FeatureExtractor):
 
-        # ToDo fill causal connectives
-        self.causal_connectives = []
+    def __init__(self, substrings: List[str]):
+        self.substrings = substrings
 
-    def extract(self, dataset_instance: FinCausalDatasetInstance) -> IsCausalConnectivePresentFeature:
-        """
-        extracts from the text a boolean, whether the text contains a causal connective.
-        :param dataset_instance:
-        :return:
-        """
-        return IsCausalConnectivePresentFeature(is_causal_connective_present=self._contains_causal_connective(dataset_instance.text))
+    def extract(self, dataset_instance: FinCausalDatasetInstance) -> BooleanFeature:
+        return BooleanFeature(boolean_value=any(substring in dataset_instance.text for substring in self.substrings))
 
-    def _contains_causal_connective(self, text: str) -> bool:
-        """
-        checks for causal connective in the text
-        :param text:
-        :return:
-        """
-        return any([causal_connective in text for causal_connective in self.causal_connectives])
+
+class RegexPresentFeatureExtractor(FeatureExtractor):
+
+    def __init__(self, regex: str):
+        self.regex = regex
+
+    def extract(self, dataset_instance: FinCausalDatasetInstance) -> BooleanFeature:
+        return BooleanFeature(boolean_value=True if len(re.findall(self.regex, dataset_instance.text)) >0 else False)
+
+
+class ContainsCausalConnectiveFeatureExtractor(SubstringPresentFeatureExtractor):
+
+    def __init__(self, causal_connectives: Optional[List[str]] = None):
+
+        self.causal_connectives = causal_connectives if causal_connectives else []
+        super().__init__(substrings=self.causal_connectives)
 
 
 class POSFeatureExtractor(FeatureExtractor):
@@ -40,3 +46,47 @@ class POSFeatureExtractor(FeatureExtractor):
         words_tokenized: List[List[str]] = [word_tokenize(sent) for sent in sent_tokenized]
         pos_tags: List[List[Tuple[str, str]]] = [pos_tag(word_tokenized) for word_tokenized in words_tokenized]
         return POSFeature(pos_tags_of_each_word_in_each_sentence=pos_tags)
+
+
+class ContainsNumericFeatureExtractor(FeatureExtractor):
+
+    def extract(self, dataset_instance: FinCausalDatasetInstance) -> BooleanFeature:
+        num_digits = sum([char.isdigit() for char in dataset_instance.text])
+        return BooleanFeature(boolean_value=num_digits != 0)
+
+
+class ContainsPercentFeatureExtractor(SubstringPresentFeatureExtractor):
+
+    def __init__(self):
+        super(ContainsPercentFeatureExtractor, self).__init__(substrings=['%'])
+
+
+class ContainsCurrencyFeatureExtractor(SubstringPresentFeatureExtractor):
+
+    def __init__(self, currencies: Optional[List[str]]):
+        super(ContainsCurrencyFeatureExtractor, self).__init__(substrings=currencies)
+
+
+class ContainsSpecificVerbAfterCommaFeatureExtractor(SubstringPresentFeatureExtractor):
+
+    def __init__(self, verbs: Optional[List[str]] = None):
+        self.verbs = verbs if verbs else []
+        super().__init__(substrings=self.verbs)
+
+
+class ContainsTextualNumericFeatureExtractor(SubstringPresentFeatureExtractor):
+
+    def __init__(self, textual_numerics: Optional[List[str]]=None):
+        self.textual_numerics = textual_numerics if textual_numerics else []
+        super(ContainsTextualNumericFeatureExtractor, self).__init__(substrings=self.textual_numerics)
+
+
+class ContainsVerbAfterCommaFeatureExtractor(RegexPresentFeatureExtractor):
+
+    def __init__(self, regex: str):
+        self.regex = regex
+        super().__init__(regex=regex)
+
+
+
+

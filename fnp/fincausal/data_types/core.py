@@ -16,11 +16,11 @@ class FinCausalLabel:
 class FinCausalDatasetInstance:
     def __init__(self,
                  unique_id: str,
-                 index: float,
+                 index: str,
                  text: str
                  )-> None:
         self.unique_id = unique_id
-        self.index: int = index
+        self.index: str = index
         self.text: str = text
 
 
@@ -60,13 +60,12 @@ class FeatureExtractor(ABC):
 class Model(ABC):
 
     @abstractmethod
-    def fit(self, dataset: FinCausalDataset, num_train_epochs: Optional[int] = None):
+    def fit(self, dataset: FinCausalDataset):
         raise NotImplementedError
 
     @abstractmethod
     def fit_and_evaluate(self,
                          train_dataset: FinCausalDataset,
-                         val_dataset: FinCausalDataset,
-                         num_train_epochs: Optional[int] = None):
+                         val_dataset: FinCausalDataset):
         raise NotImplementedError
 

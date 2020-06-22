@@ -1,4 +1,5 @@
-from typing import List
+from pathlib import Path
+from typing import List, Optional
 from fnp.fincausal.data_types.core import FinCausalDataset
 from fnp.fincausal.data_types.dataset_instance import FinCausalTask1DatasetInstance, FinCausalTask2DatasetInstance
 from fnp.fincausal.data_types.modeling_instance import FinCausalTask1ModelingInstance
@@ -6,8 +7,10 @@ from fnp.fincausal.data_types.modeling_instance import FinCausalTask1ModelingIns
 
 class FinCausalTask1Dataset(FinCausalDataset):
 
-    def __init__(self, instances: List[FinCausalTask1DatasetInstance]):
+    def __init__(self, instances: List[FinCausalTask1DatasetInstance],
+                 path: Optional[Path] = None):
         super().__init__(instances=instances)
+        self.path = path
 
 
 class FinCausalTask2Dataset(FinCausalDataset):

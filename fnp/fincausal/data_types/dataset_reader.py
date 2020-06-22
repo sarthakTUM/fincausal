@@ -60,7 +60,8 @@ class FinCausalTask1DatasetCSVAdapter(CSVAdapter):
                     text=row['Text'],
                     gold=None)
             list_of_instances.append(instance)
-        return FinCausalTask1Dataset(list_of_instances)
+        return FinCausalTask1Dataset(list_of_instances,
+                                     path=self.csv_filepath)
 
 
 class FinCausalTask1ModelingDatasetAdapter(DatasetAdapter):
