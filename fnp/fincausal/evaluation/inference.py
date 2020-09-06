@@ -10,17 +10,17 @@ class FinCausalTask1Inference:
     def __init__(self,
                  model_path: Path,
                  predict_file_path: Path,
-                 f1: float,
-                 recall: float,
-                 precision: float,
-                 tp: int,
-                 fp: int,
-                 fn: int,
-                 tn: int,
                  predict_modeling_dataset: FinCausalTask1ModelingDataset,
                  output_dir: Path,
                  train_file_path: Optional[Path] = None,
-                 val_file_path: Optional[Path] = None
+                 val_file_path: Optional[Path] = None,
+                 f1: Optional[float] = None,
+                 recall: Optional[float] = None,
+                 precision: Optional[float] = None,
+                 tp: Optional[int] = None,
+                 fp: Optional[int] = None,
+                 fn: Optional[int] = None,
+                 tn: Optional[int] = None
                  ):
         self.model_path = model_path
         self.predict_file_path = predict_file_path

@@ -10,6 +10,8 @@ from fnp.fincausal.data_types.dataset_instance import FinCausalTask1DatasetInsta
 from fnp.fincausal.data_types.label import FinCausalTask1Label
 from fnp.fincausal.data_types.modeling_instance import FinCausalTask1ModelingInstance
 
+import tqdm
+
 
 class DatasetAdapter(ABC):
 
@@ -75,7 +77,7 @@ class FinCausalTask1ModelingDatasetAdapter(DatasetAdapter):
 
     def read(self) -> FinCausalTask1ModelingDataset:
         list_of_modeling_instances = []
-        for dataset_instance in self.fincausal_task1_dataset.instances:
+        for dataset_instance in tqdm.tqdm(self.fincausal_task1_dataset.instances):
             features_for_dataset_instance = []
             for feature_extractor in self.feature_extractors:
                 features_for_dataset_instance.append(feature_extractor.extract(dataset_instance=dataset_instance))

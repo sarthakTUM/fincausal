@@ -16,3 +16,8 @@ class POSFeature(Feature):
         self.pos_tags_of_each_word_in_each_sentence = pos_tags_of_each_word_in_each_sentence
 
 
+class OneHotFeature(Feature):
+    def __init__(self, one_hot: List[int]):
+        super(OneHotFeature).__init__()
+        self.one_hot = one_hot
+

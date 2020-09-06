@@ -6,17 +6,17 @@ from fnp.fincausal.data_types.dataset_reader import FinCausalTask1DatasetCSVAdap
 from fnp.fincausal.data_types.feature_extractors import ContainsCausalConnectiveFeatureExtractor, \
     ContainsNumericFeatureExtractor, ContainsPercentFeatureExtractor, ContainsCurrencyFeatureExtractor, \
     ContainsTextualNumericFeatureExtractor, ContainsVerbAfterCommaFeatureExtractor, \
-    ContainsSpecificVerbAfterCommaFeatureExtractor
+    ContainsSpecificVerbAfterCommaFeatureExtractor, POSofRootFeatureExtractor
 
 # 1. specify a file to read
 from fnp.fincausal.data_types.model import SklearnRandomForest, XGBoostClassifier
 from fnp.fincausal.evaluation.inference import FinCausalTask1Inference
 from fnp.fincausal.evaluation.metrics import MetricsWrapper
 
-fincausal_task1_train_file_path = Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/train_on_trial_test_on_practice_v2/train.csv')
-fincausal_task1_val_file_path = Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/train_on_trial_test_on_practice_v2/dev.csv')
-fincausal_task1_test_file_path = Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/train_on_trial_test_on_practice_v2/test.csv')
-fincausal_task1_model_path = Path('/media/sarthak/HDD/data_science/fnp_resources/fincausal_t1_models/93_1/output/best_model')
+fincausal_task1_train_file_path = Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/all_combined/train.csv')
+fincausal_task1_val_file_path = Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/all_combined/dev.csv')
+fincausal_task1_test_file_path = Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/all_combined/test.csv')
+fincausal_task1_model_path = Path('/media/sarthak/HDD/data_science/fnp_resources/fincausal_t1_models/113_1/output/best_model')
 
 # 2. load the file using FileReader
 fincausal_task1_train_dataset_csv_reader = FinCausalTask1DatasetCSVAdapter(fincausal_task1_train_file_path)
@@ -62,9 +62,11 @@ feature_extractors = [ContainsCausalConnectiveFeatureExtractor(causal_connective
                                                                             ', rising']),
                       ContainsTextualNumericFeatureExtractor(textual_numerics=['one', 'two', 'three', 'four', 'five',
                                                                                'six', 'seven', 'eight', 'nine', 'ten']),
-                      ContainsVerbAfterCommaFeatureExtractor(regex=""",\s([a-z]*?ing)""")]
+                      ContainsVerbAfterCommaFeatureExtractor(regex=""",\s([a-z]*?ing)"""),
+                      POSofRootFeatureExtractor()]
 
 # 4. create modeling instances from the dataset_instances and the feature_extractors
+print('extracting features')
 fincausal_task1_train_modeling_dataset_reader = FinCausalTask1ModelingDatasetAdapter(fincausal_task1_dataset=fincausal_task1_train_dataset,
                                                                                      feature_extractors=feature_extractors)
 fincausal_task1_val_modeling_dataset_reader = FinCausalTask1ModelingDatasetAdapter(fincausal_task1_dataset=fincausal_task1_val_dataset,
@@ -83,11 +85,13 @@ classifier = XGBoostClassifier(output_dir=fincausal_task1_model_path,
                                class_weights=None)
 
 # 6. Fit the model to the data
+print('training model')
 classifier.fit_and_evaluate(train_dataset=fincausal_task1_train_modeling_dataset,
                             val_dataset=fincausal_task1_val_modeling_dataset)
 
 
 # 7. Predict on the test dataset
+print('predicting..')
 classifier = XGBoostClassifier(output_dir=fincausal_task1_model_path,
                                reload=True)
 classifier.predict_on_dataset(dataset=fincausal_task1_test_modeling_dataset)

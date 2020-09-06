@@ -1,11 +1,12 @@
 from typing import Optional, List, Tuple
 
+import spacy
 from nltk import sent_tokenize, word_tokenize, pos_tag
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 from fnp.fincausal.data_types.core import FeatureExtractor
 from fnp.fincausal.data_types.dataset_instance import FinCausalDatasetInstance
-from fnp.fincausal.data_types.features import POSFeature, BooleanFeature
+from fnp.fincausal.data_types.features import POSFeature, BooleanFeature, OneHotFeature
 
 import re
 
@@ -86,6 +87,24 @@ class ContainsVerbAfterCommaFeatureExtractor(RegexPresentFeatureExtractor):
     def __init__(self, regex: str):
         self.regex = regex
         super().__init__(regex=regex)
+
+
+class POSofRootFeatureExtractor(FeatureExtractor):
+
+    def extract(self, dataset_instance: FinCausalDatasetInstance) -> OneHotFeature:
+        one_hot = [0]*len(self.pos_cats)
+        doc = self.nlp(dataset_instance.text)
+        for token in doc:
+            if token.dep_ == 'ROOT':
+                one_hot[self.pos_cats.index(token.pos_.upper())] = 1
+        return OneHotFeature(one_hot=one_hot)
+
+    def \
+            __init__(self):
+        self.nlp = spacy.load("en_core_web_sm")
+        self.pos_cats = ['ADJ', 'ADP', 'ADV', 'AUX', 'CONJ', 'CCONJ', 'DET', 'INTJ', 'NOUN',
+                         'NUM', 'PART', 'PRON', 'PROPN', 'PUNCT', 'SCONJ', 'SYM', 'VERB', 'X', 'SPACE']
+
 
 
 

@@ -5,15 +5,18 @@ from fnp.fincausal.data_types.dataset_reader import FinCausalTask1DatasetCSVAdap
 from fnp.fincausal.data_types.feature_extractors import ContainsCausalConnectiveFeatureExtractor, \
     ContainsNumericFeatureExtractor, ContainsPercentFeatureExtractor, ContainsCurrencyFeatureExtractor, \
     ContainsTextualNumericFeatureExtractor, ContainsVerbAfterCommaFeatureExtractor, \
-    ContainsSpecificVerbAfterCommaFeatureExtractor
+    ContainsSpecificVerbAfterCommaFeatureExtractor, POSofRootFeatureExtractor
+
+# 0. whether to evaluate
+evaluate = False
 
 # 1. specify a file to read
 from fnp.fincausal.data_types.model import SklearnRandomForest, XGBoostClassifier
 from fnp.fincausal.evaluation.inference import FinCausalTask1Inference
 from fnp.fincausal.evaluation.metrics import MetricsWrapper
 
-fincausal_task1_test_file_path = Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/train_on_trial_test_on_practice_v2/dev.csv')
-fincausal_task1_model_path = Path('/media/sarthak/HDD/data_science/fnp_resources/fincausal_t1_models/93_1/output/best_model')
+fincausal_task1_test_file_path = Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/all_combined/eval.csv')
+fincausal_task1_model_path = Path('/media/sarthak/HDD/data_science/fnp_resources/fincausal_t1_models/102_1/output/best_model')
 
 # 2. load the file using FileReader
 fincausal_task1_test_dataset_csv_reader = FinCausalTask1DatasetCSVAdapter(fincausal_task1_test_file_path)
@@ -61,28 +64,31 @@ fincausal_task1_test_modeling_dataset = fincausal_task1_test_modeling_dataset_re
 
 
 # 7. Predict on the test dataset
-classifier = XGBoostClassifier(output_dir=fincausal_task1_model_path,
+classifier = SklearnRandomForest(output_dir=fincausal_task1_model_path,
                                reload=True)
 classifier.predict_on_dataset(dataset=fincausal_task1_test_modeling_dataset)
 
 # 8. evaluate the predictions
-task1_metrics = MetricsWrapper.calculate_metrics_task1(dataset=fincausal_task1_test_modeling_dataset)
-task1_cm = MetricsWrapper.calculate_confusionmatrix_task1(dataset=fincausal_task1_test_modeling_dataset)
-print(task1_metrics)
-print(task1_cm)
+task1_metrics=None
+task1_cm=None
+if evaluate:
+    task1_metrics = MetricsWrapper.calculate_metrics_task1(dataset=fincausal_task1_test_modeling_dataset)
+    task1_cm = MetricsWrapper.calculate_confusionmatrix_task1(dataset=fincausal_task1_test_modeling_dataset)
+    print(task1_metrics)
+    print(task1_cm)
 
 fincausal_task1_inference = FinCausalTask1Inference(
     model_path=Path(fincausal_task1_model_path),
     predict_file_path=fincausal_task1_test_file_path,
-    f1=task1_metrics['f1'],
-    recall=task1_metrics['recall'],
-    precision=task1_metrics['precision'],
-    tp=task1_cm['tp'],
-    fp=task1_cm['fp'],
-    tn=task1_cm['tn'],
-    fn=task1_cm['fn'],
+    f1=task1_metrics['f1'] if task1_metrics else None,
+    recall=task1_metrics['recall'] if task1_metrics else None,
+    precision=task1_metrics['precision'] if task1_metrics else None,
+    tp=task1_cm['tp'] if task1_cm else None,
+    fp=task1_cm['fp'] if task1_cm else None,
+    tn=task1_cm['tn'] if task1_cm else None,
+    fn=task1_cm['fn'] if task1_cm else None,
     predict_modeling_dataset=fincausal_task1_test_modeling_dataset,
-    train_file_path=Path('/m/media/sarthak/HDD/data_science/fnp_resources/data/task1/train_on_trial_test_on_practice_v2/train.csv'),
-    val_file_path=Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/train_on_trial_test_on_practice_v2/dev.csv'),
-    output_dir=Path(fincausal_task1_model_path / 'inference_dev')
+    train_file_path=Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/all_combined/train.csv'),
+    val_file_path=Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/all_combined/dev.csv'),
+    output_dir=Path(fincausal_task1_model_path / 'inference_eval')
 )
