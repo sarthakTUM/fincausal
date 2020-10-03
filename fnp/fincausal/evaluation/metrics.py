@@ -8,7 +8,9 @@ class MetricsWrapper:
 
     @staticmethod
     def calculate_metrics_task1(dataset: FinCausalTask1ModelingDataset) -> Dict[str, float]:
-
+        """
+        calculates the metrics for FinCausal Taks 1
+        """
         true = []
         preds = []
 
@@ -20,6 +22,10 @@ class MetricsWrapper:
 
     @staticmethod
     def calculate_confusionmatrix_task1(dataset: FinCausalTask1ModelingDataset) -> Dict[str, int]:
+        """
+        calculates TP, FP, FN and TN for FinCausal Task 1
+
+        """
 
         true = []
         preds = []
@@ -30,16 +36,11 @@ class MetricsWrapper:
 
         return Metrics.binary_confusion_matrix(true, preds)
 
-    @staticmethod
-    def calculate_metrics_task2():
-        pass
-
 
 class Metrics:
 
     @staticmethod
     def f_beta(tp: int, fp: int, fn: int, beta: float) -> float:
-        # todo handle division by zero
         beta_value = (1+(beta**2))
         precision = Metrics.precision(tp, fp)
         recall = Metrics.recall(tp, fn)

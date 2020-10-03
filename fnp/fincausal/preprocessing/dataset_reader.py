@@ -1,26 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import List
-
 import pandas as pd
 from pathlib import Path
-
-from fnp.fincausal.data_types.core import FinCausalDataset, FeatureExtractor
+from fnp.fincausal.data_types.core import FinCausalDataset, FeatureExtractor, DatasetAdapter
 from fnp.fincausal.data_types.dataset import FinCausalTask1Dataset, FinCausalTask1ModelingDataset
 from fnp.fincausal.data_types.dataset_instance import FinCausalTask1DatasetInstance
 from fnp.fincausal.data_types.label import FinCausalTask1Label
 from fnp.fincausal.data_types.modeling_instance import FinCausalTask1ModelingInstance
-
 import tqdm
-
-
-class DatasetAdapter(ABC):
-
-    def __init__(self, *args, **kwargs):
-        pass
-
-    @abstractmethod
-    def read(self) -> FinCausalDataset:
-        raise NotImplementedError
 
 
 class CSVAdapter(DatasetAdapter):

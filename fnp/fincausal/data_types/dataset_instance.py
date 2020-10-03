@@ -1,19 +1,31 @@
 from typing import Optional
-
 from fnp.fincausal.data_types.core import FinCausalDatasetInstance
 
 
 class FinCausalTask1DatasetInstance(FinCausalDatasetInstance):
+    """
+    Data Model for instance of task 1
+    """
     def __init__(self,
                  unique_id: str,
                  index: str,
                  text: str,
                  gold: Optional[int] = None):
+        """
+
+        :param unique_id: custom generated ID (uuid)
+        :param index: ID provided by FinCausal
+        :param text: raw text segment
+        :param gold: gold label by FinCausal
+        """
         super().__init__(unique_id=unique_id, index=index, text=text)
         self.gold = gold
 
 
 class FinCausalTask2DatasetInstance(FinCausalDatasetInstance):
+    """
+    This class is not used in this code because we are not working in Task 2
+    """
     def __init__(self,
                  index: str,
                  text: str,

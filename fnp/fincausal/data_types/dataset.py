@@ -9,11 +9,17 @@ class FinCausalTask1Dataset(FinCausalDataset):
 
     def __init__(self, instances: List[FinCausalTask1DatasetInstance],
                  path: Optional[Path] = None):
+        """
+        :param path: path to the CSV file containing the raw dataset for the task 1 of FinCausal task
+        """
         super().__init__(instances=instances)
         self.path = path
 
 
 class FinCausalTask2Dataset(FinCausalDataset):
+    """
+    This class is not used because we are not working on Task 2
+    """
 
     def __init__(self, instances: List[FinCausalTask2DatasetInstance]):
         super().__init__(instances=instances)

@@ -1,11 +1,9 @@
 from pathlib import Path
-
-from fnp.fincausal.data_types.dataset_reader import FinCausalTask1DatasetCSVAdapter, \
-    FinCausalTask1ModelingDatasetAdapter
-from fnp.fincausal.data_types.model import SimpleTransformersModel
 from fnp.fincausal.evaluation.inference import FinCausalTask1Inference
-
 from fnp.fincausal.evaluation.metrics import MetricsWrapper
+from fnp.fincausal.model.simpletransformers_model import SimpleTransformersModel
+from fnp.fincausal.preprocessing.dataset_reader import FinCausalTask1DatasetCSVAdapter, \
+    FinCausalTask1ModelingDatasetAdapter
 
 # 0. Constants
 evaluate = True

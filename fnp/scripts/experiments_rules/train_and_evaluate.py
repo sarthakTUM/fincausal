@@ -1,17 +1,15 @@
 from pathlib import Path
 
-from fnp.fincausal import utils
-from fnp.fincausal.data_types.dataset_reader import FinCausalTask1DatasetCSVAdapter, \
+# 1. specify a file to read
+from fnp.fincausal.evaluation.inference import FinCausalTask1Inference
+from fnp.fincausal.evaluation.metrics import MetricsWrapper
+from fnp.fincausal.model.sklearn_model import XGBoostClassifier
+from fnp.fincausal.preprocessing.dataset_reader import FinCausalTask1DatasetCSVAdapter, \
     FinCausalTask1ModelingDatasetAdapter
-from fnp.fincausal.data_types.feature_extractors import ContainsCausalConnectiveFeatureExtractor, \
+from fnp.fincausal.preprocessing.feature_extractors import ContainsCausalConnectiveFeatureExtractor, \
     ContainsNumericFeatureExtractor, ContainsPercentFeatureExtractor, ContainsCurrencyFeatureExtractor, \
     ContainsTextualNumericFeatureExtractor, ContainsVerbAfterCommaFeatureExtractor, \
     ContainsSpecificVerbAfterCommaFeatureExtractor, POSofRootFeatureExtractor
-
-# 1. specify a file to read
-from fnp.fincausal.data_types.model import SklearnRandomForest, XGBoostClassifier
-from fnp.fincausal.evaluation.inference import FinCausalTask1Inference
-from fnp.fincausal.evaluation.metrics import MetricsWrapper
 
 fincausal_task1_train_file_path = Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/all_combined/train.csv')
 fincausal_task1_val_file_path = Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/all_combined/dev.csv')

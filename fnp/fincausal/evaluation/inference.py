@@ -1,11 +1,13 @@
 from pathlib import Path
 from typing import Optional
 import pandas as pd
-
 from fnp.fincausal.data_types.dataset import FinCausalTask1ModelingDataset
 
 
 class FinCausalTask1Inference:
+    """
+    Class for holding the inference values for the FinCausal Task 1
+    """
 
     def __init__(self,
                  model_path: Path,
@@ -22,6 +24,21 @@ class FinCausalTask1Inference:
                  fn: Optional[int] = None,
                  tn: Optional[int] = None
                  ):
+        """
+        :param model_path: path to model
+        :param predict_file_path: path to final predictions
+        :param predict_modeling_dataset: dataset to predict on
+        :param output_dir: output path where training artifacts are stored
+        :param train_file_path: path to the training file used
+        :param val_file_path: path to the validation file used
+        :param f1: F1 score
+        :param recall: recall score
+        :param precision: precision score
+        :param tp: True positives
+        :param fp: False Positives
+        :param fn: False Negatives
+        :param tn: True Negatives
+        """
         self.model_path = model_path
         self.predict_file_path = predict_file_path
         self.f1 = f1
@@ -51,7 +68,6 @@ class FinCausalTask1Inference:
         """
         write the metrics to the specified filepath in a text file
         :param output_dir: force to write to a new output_dir
-        :return:
         """
 
         output_dir = output_dir if output_dir else self.output_dir
@@ -70,7 +86,6 @@ class FinCausalTask1Inference:
         """
         write the predictions from the test_modeling_dataset to a csv file
         :param output_dir: force to write to a new output_dir
-        :return:
         """
 
         output_dir = output_dir if output_dir else self.output_dir

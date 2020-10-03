@@ -1,13 +1,11 @@
 from pathlib import Path
 
-from fnp.fincausal import utils
-from fnp.fincausal.data_types.dataset_reader import FinCausalTask1DatasetCSVAdapter, \
-    FinCausalTask1ModelingDatasetAdapter
-
 # 1. specify a file to read
-from fnp.fincausal.data_types.model import TfIdfVectorizerXgbClassifier, TfIdfWordCharVectorizerXgbClassifier
 from fnp.fincausal.evaluation.inference import FinCausalTask1Inference
 from fnp.fincausal.evaluation.metrics import MetricsWrapper
+from fnp.fincausal.model.sklearn_model import TfIdfWordCharVectorizerXgbClassifier
+from fnp.fincausal.preprocessing.dataset_reader import FinCausalTask1DatasetCSVAdapter, \
+    FinCausalTask1ModelingDatasetAdapter
 
 fincausal_task1_train_file_path = Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/train_on_trial_test_on_practice_v2/train.csv')
 fincausal_task1_val_file_path = Path('/media/sarthak/HDD/data_science/fnp_resources/data/task1/train_on_trial_test_on_practice_v2/dev.csv')

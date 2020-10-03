@@ -1,17 +1,17 @@
 from pathlib import Path
 
-from fnp.fincausal.data_types.dataset_reader import FinCausalTask1DatasetCSVAdapter, \
+from fnp.fincausal.model.sklearn_model import SklearnRandomForest
+from fnp.fincausal.preprocessing.dataset_reader import FinCausalTask1DatasetCSVAdapter, \
     FinCausalTask1ModelingDatasetAdapter
-from fnp.fincausal.data_types.feature_extractors import ContainsCausalConnectiveFeatureExtractor, \
+from fnp.fincausal.preprocessing.feature_extractors import ContainsCausalConnectiveFeatureExtractor, \
     ContainsNumericFeatureExtractor, ContainsPercentFeatureExtractor, ContainsCurrencyFeatureExtractor, \
     ContainsTextualNumericFeatureExtractor, ContainsVerbAfterCommaFeatureExtractor, \
-    ContainsSpecificVerbAfterCommaFeatureExtractor, POSofRootFeatureExtractor
+    ContainsSpecificVerbAfterCommaFeatureExtractor
 
 # 0. whether to evaluate
 evaluate = False
 
 # 1. specify a file to read
-from fnp.fincausal.data_types.model import SklearnRandomForest, XGBoostClassifier
 from fnp.fincausal.evaluation.inference import FinCausalTask1Inference
 from fnp.fincausal.evaluation.metrics import MetricsWrapper
 
