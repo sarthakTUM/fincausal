@@ -2,8 +2,6 @@ from typing import Optional, List, Tuple
 
 import spacy
 from nltk import sent_tokenize, word_tokenize, pos_tag
-from sklearn.feature_extraction.text import TfidfVectorizer
-
 from fnp.fincausal.data_types.core import FeatureExtractor
 from fnp.fincausal.data_types.dataset_instance import FinCausalDatasetInstance
 from fnp.fincausal.data_types.features import POSFeature, BooleanFeature, OneHotFeature
