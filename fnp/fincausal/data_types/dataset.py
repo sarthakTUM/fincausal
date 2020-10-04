@@ -30,3 +30,7 @@ class FinCausalTask1ModelingDataset(FinCausalDataset):
     def __init__(self, instances: List[FinCausalTask1ModelingInstance]):
         super(FinCausalTask1ModelingDataset, self).__init__(instances=instances)
 
+    @property
+    def is_labeled(self) -> bool:
+        return all([True if modeling_instance.gold is not None else False for modeling_instance in self.instances])
+

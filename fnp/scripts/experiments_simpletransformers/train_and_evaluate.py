@@ -81,7 +81,7 @@ is a wrapper over the Transformers library.
 imbalanced_learning = True  # for imbalanced classification settings, the losses are assigned the weights
 
 simpletransformers_model = SimpleTransformersModel(
-    model_type='bert',  # possible to replace this with another architcture like RoBERTa, etc.
+    model_type='bert',  # possible to replace this with another architecture like RoBERTa, etc.
     model_name_or_path=pretrained_model_path,  # can be local file path or huggingface repository path
     output_dir=output_model_path,  # path for storing the training related artifacts
     class_weights=None if not imbalanced_learning else utils.calculate_class_weights_task1(fincausal_task1_train_modeling_dataset))
@@ -104,7 +104,7 @@ simpletransformers_model.fit_and_evaluate(train_dataset=fincausal_task1_train_mo
                                           gradient_accumulation_steps=2,
                                           random_oversample=False)
 
-################################################################################################
+###############################################################################################
 
 # 6. Predict on the test dataset
 
@@ -121,7 +121,7 @@ simpletransformers_model = SimpleTransformersModel(
 # 6.2 Make the prediction
 simpletransformers_model.predict_on_dataset(dataset=fincausal_task1_test_modeling_dataset)
 
-#################################################################################################
+################################################################################################
 
 # 7. evaluate the predictions
 
@@ -152,5 +152,5 @@ fincausal_task1_inference = FinCausalTask1Inference(
     output_dir=Path(output_model_path / 'output/best_model/inference')
 )
 
-###################################################################################################
+#################################################################################################
 
